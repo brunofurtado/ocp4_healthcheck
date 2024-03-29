@@ -1,0 +1,71 @@
+# ETCD Geral Informations
+
+## ETCD Status and Health
+
+
+### Pods Status
+ 
+```python
+{{ETCD_PODS.stdout_lines|join('\n')}}
+```
+
+### ETCD 
+```python
+{{ETCD_EVENTS.stdout_lines|join('\n')}}
+```
+
+### ETCD Member List
+
+```
+{{ETCD_MEMBER_LIST.stdout_lines|join('\n')}}
+```
+
+#### ETCD Proposal
+
+```
+{{ETCD_MEMBER_HEALTH_CLUSTER.stdout_lines|join('\n')}}
+```
+
+#### Endpoints Health
+
+```
+{{ETCD_ENDPOINT_HEALTH.stdout_lines|join('\n')}}
+```
+
+#### Endpoint Status
+
+```
+{{ETCD_ENDPOINT_HEALTH_CLUSTER.stdout_lines|join('\n')}}
+```
+
+### ETCD Revision
+
+```
+{{ETCD_ENDPOINT_REVISION.stdout_lines|join('\n')}}
+```
+
+
+### ETCD Fragmentation Status
+
+```
+{{ETCD_DEFRAGMENTATION.stdout_lines|join('\n')}}
+```
+
+### Local Backup in Master Nodes
+
+```
+{{ETCD_LOCAL_BACKUP.stdout_lines|join('\n')}}
+```
+
+
+### ETCD Total Objects -  Prometheus Information
+
+```
+{{ETCD_OBJECTS.stdout_lines|join('\n')}}
+
+```
+
+[8Gb]: https://ETCD.io/docs/v3.5/dev-guide/limit/#storage-size-limit
+
+[defrag manual]: https://docs.openshift.com/container-platform/4.10/scalability_and_performance/recommended-host-practices.html#manual-defrag-ETCD-data_recommended-host-practices
+

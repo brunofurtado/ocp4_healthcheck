@@ -1,0 +1,12 @@
+Insighst para seguranca com Ansible
+
+* incluso na subscricao de graca
+*  checagem de vulnerabilidade
+*  compliance
+
+ajudar a priorizar os riscos
+cria automaticamente playbooks para analisar e resolver os erros econtrados
+
+
+funciona on hibrid cloud
+\

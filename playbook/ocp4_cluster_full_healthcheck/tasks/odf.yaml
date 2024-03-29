@@ -1,0 +1,104 @@
+---
+ - name: (01) Check ODF Health
+   shell: ceph_node=`oc get pods -n openshift-storage -l app=rook-ceph-operator -o custom-columns=POD:metadata.name --no-headers` && oc rsh -n openshift-storage  $ceph_node ceph -c /var/lib/rook/openshift-storage/openshift-storage.config health detail
+   ignore_errors: yes
+   register: ceph_health
+
+ - name: (02) Check status
+   shell: ceph_node=`oc get pods -n openshift-storage -l app=rook-ceph-operator -o custom-columns=POD:metadata.name --no-headers` && oc rsh -n openshift-storage  $ceph_node ceph -c /var/lib/rook/openshift-storage/openshift-storage.config status
+   ignore_errors: yes
+   register: ceph_status
+
+ - name: (03) Check OSD status
+   shell: ceph_node=`oc get pods -n openshift-storage -l app=rook-ceph-operator -o custom-columns=POD:metadata.name --no-headers` && oc rsh -n openshift-storage  $ceph_node ceph -c /var/lib/rook/openshift-storage/openshift-storage.config osd status
+   ignore_errors: yes
+   register: ceph_osd_status
+
+
+ - name: (04) Check OSD DF
+   shell: ceph_node=`oc get pods -n openshift-storage -l app=rook-ceph-operator -o custom-columns=POD:metadata.name --no-headers` && oc rsh -n openshift-storage  $ceph_node ceph -c /var/lib/rook/openshift-storage/openshift-storage.config osd df
+   ignore_errors: yes
+   register: ceph_osd_df   
+
+ - name: (05) Check OSD status
+   shell: ceph_node=`oc get pods -n openshift-storage -l app=rook-ceph-operator -o custom-columns=POD:metadata.name --no-headers` && oc rsh -n openshift-storage  $ceph_node ceph -c /var/lib/rook/openshift-storage/openshift-storage.config df detail
+   ignore_errors: yes
+   register: ceph_df_detail
+
+ - name: (06) Check OSD LSPOOLS
+   shell: ceph_node=`oc get pods -n openshift-storage -l app=rook-ceph-operator -o custom-columns=POD:metadata.name --no-headers` && oc rsh -n openshift-storage  $ceph_node ceph -c /var/lib/rook/openshift-storage/openshift-storage.config osd lspools
+   ignore_errors: yes
+   register: ceph_osd_lspools
+
+ - name: (07) Check MON STAT
+   shell: ceph_node=`oc get pods -n openshift-storage -l app=rook-ceph-operator -o custom-columns=POD:metadata.name --no-headers` && oc rsh -n openshift-storage  $ceph_node ceph -c /var/lib/rook/openshift-storage/openshift-storage.config mon stat
+   ignore_errors: yes
+   register: ceph_mon_stat
+
+ - name: (08) Check MON DUMP 
+   shell: ceph_node=`oc get pods -n openshift-storage -l app=rook-ceph-operator -o custom-columns=POD:metadata.name --no-headers` && oc rsh -n openshift-storage  $ceph_node ceph -c /var/lib/rook/openshift-storage/openshift-storage.config mon dump
+   ignore_errors: yes
+   register: ceph_mon_dump
+
+ - name: (09) Check OSD DF TREE
+   shell: ceph_node=`oc get pods -n openshift-storage -l app=rook-ceph-operator -o custom-columns=POD:metadata.name --no-headers` && oc rsh -n openshift-storage  $ceph_node ceph -c /var/lib/rook/openshift-storage/openshift-storage.config osd df tree
+   ignore_errors: yes
+   register: ceph_osd_df_tree
+
+ - name: (10) Check OSD TREE
+   shell: ceph_node=`oc get pods -n openshift-storage -l app=rook-ceph-operator -o custom-columns=POD:metadata.name --no-headers` && oc rsh -n openshift-storage  $ceph_node ceph -c /var/lib/rook/openshift-storage/openshift-storage.config osd tree
+   ignore_errors: yes
+   register: ceph_osd_tree
+
+ - name: (11) Check FS DUMP
+   shell: ceph_node=`oc get pods -n openshift-storage -l app=rook-ceph-operator -o custom-columns=POD:metadata.name --no-headers` && oc rsh -n openshift-storage  $ceph_node ceph -c /var/lib/rook/openshift-storage/openshift-storage.config fs dump
+   ignore_errors: yes
+   register: ceph_fs_dump
+
+
+ - name: (12) Check FS LS
+   shell: ceph_node=`oc get pods -n openshift-storage -l app=rook-ceph-operator -o custom-columns=POD:metadata.name --no-headers` && oc rsh -n openshift-storage  $ceph_node ceph -c /var/lib/rook/openshift-storage/openshift-storage.config fs ls 
+   ignore_errors: yes
+   register: ceph_fs_ls   
+
+ - name: (13) Check FS STATUS
+   shell: ceph_node=`oc get pods -n openshift-storage -l app=rook-ceph-operator -o custom-columns=POD:metadata.name --no-headers` && oc rsh -n openshift-storage  $ceph_node ceph -c /var/lib/rook/openshift-storage/openshift-storage.config fs status
+   ignore_errors: yes
+   register: ceph_fs_status 
+
+ - name: (14) Check MDS STAT
+   shell: ceph_node=`oc get pods -n openshift-storage -l app=rook-ceph-operator -o custom-columns=POD:metadata.name --no-headers` && oc rsh -n openshift-storage  $ceph_node ceph -c /var/lib/rook/openshift-storage/openshift-storage.config mds stat
+   ignore_errors: yes
+   register: ceph_mds_stat
+
+
+ - name: (15) Check FS SUBVOLUME
+   shell: ceph_node=`oc get pods -n openshift-storage -l app=rook-ceph-operator -o custom-columns=POD:metadata.name --no-headers` && oc rsh -n openshift-storage  $ceph_node ceph -c /var/lib/rook/openshift-storage/openshift-storage.config fs subvolumegroup ls ocs-storagecluster-cephfilesystem
+   ignore_errors: yes
+   register: ceph_fs_subvolume
+#####
+#
+#
+
+ - set_fact:
+     CEPH_HEALTH: "{{ ceph_health.stdout }}"
+     CEPH_STATUS: "{{ ceph_status.stdout  }}"
+     CEPH_OSD_STATUS: "{{ ceph_osd_status.stdout }} "
+     CEPH_OSD_DF: "{{ceph_osd_df.stdout}}"
+     CEPH_DF_DETAIL : "{{ ceph_df_detail.stdout }}"
+     CEPH_OSD_LSPOOLS : "{{ ceph_osd_lspools.stdout }}"
+     CEPH_MON_STAT : "{{ ceph_mon_stat.stdout }}"
+     CEPH_MON_DUMP : "{{ ceph_mon_dump.stdout }}"
+     CEPH_ODS_DF_TREE : "{{ ceph_osd_df_tree.stdout }}"
+     CEPH_OSD_TREE : "{{ ceph_osd_tree.stdout }}"
+     CEPH_FS_DUMP : "{{ ceph_fs_dump.stdout }}"
+     CEPH_FS_LS : "{{ ceph_fs_ls.stdout }}"
+     CEPH_FS_STATUS : "{{ ceph_fs_status.stdout }}"
+     CEPH_MDS_STAT : "{{ ceph_mds_stat.stdout }}"
+     CEPH_FS_SUBVOLUME : "{{ ceph_fs_subvolume.stdout }}"
+
+ - name: (05/05) Create Report
+   template:
+     src: odf.j2
+     #TEMPLATE NOT FOUND src: odf.md.j2
+     dest: /tmp/report/report_odf.md

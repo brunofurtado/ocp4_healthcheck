@@ -1,0 +1,4 @@
+---
+- hosts: localhost
+  roles:
+  - ocp4_cluster_full_healthcheck

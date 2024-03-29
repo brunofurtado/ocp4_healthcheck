@@ -1,0 +1,147 @@
+# General Information of the cluster {{OCP_DNSNAME}}
+
+
+### Cluster Informations
+
+|Cluster|{{OCP_DNSNAME}}|
+| ----:|:-----|
+|ID    |{{OCP_ID}}|
+|Network|{{OCP_CLUSTERNETWORK}}|
+|Service Network|{{OCP_SERVICENETWORK}}|
+|MTU    |{{OCP_MTU}}|
+|URL    |{{OCP_CONSOLE}}   |
+|API    |{{OCP_API}}|
+|Version|{{OCP_VERSION}}|
+|Channel|{{OCP_CHANNEL}}|
+|Update |{{OCP_UPDATE}}|
+
+### OCP Maximus tested vs Client Environment
+|OCP Mamximus|4x Maximus  |{{OCP_DNSNAME}}   |
+| ----:|:-----|---:|
+|Number of nodes|2000|{{OCP_NODES}}|
+|Number of pods|150.000|{{OCP_PODS}}|
+|Number of pods per node|250| x  |
+|Number of namespaces|10.000|{{OCP_NAMESPACES}}|
+|Number of builds|10,000 (Default pod RAM 512 Mi) - Source-to-Image (S2I) build strategy|{{OCP_BUILDS}}|
+|Number of secrets|80.000|{{OCP_SECRETS}}|
+|Number of config maps|90.000|{{OCP_CONFIGMAPS}}|
+|Number of services|10.000|{{OCP_SERVICES}}|
+|Number of build configs|12.000|{{OCP_BC}}|
+|Number of custom resource definitions (CRD)|512|{{OCP_CRDS}}|
+
+### Cluster provider information
+
+The cluster intallation was done using the methodology:
+
+```
+{{OCP_INSTALATION_IPI}}
+```
+
+```
+{{OCP_INSTALATION_UPI}}
+```
+For installations with the IPI methodology, we collect some information about the cloud provider.
+
+```
+{{OCP_API_PROVIDER}}
+```
+
+
+### Cluster Update Status
+
+Applied updates in the cluster.
+Actual version of the cluster ```{{OCP_VERSION}}```.
+
+Update started on: ```{{OCP_UPDATE_START}}```.
+
+Update finished in ```{{OCP_UPDATE_COMPLETED}}```.
+
+Applied upgrade path (from current to older versions):
+
+```
+{{OCP_UPDATE_PATH}}
+```
+
+
+
+ 
+#### Master nodes resources
+```
+{{OCP_MASTER_NODES}}
+```
+
+
+###Certificados aprovados/pendente aprovação
+```python
+{{OCP_CSRS}}
+```
+
+
+##### Pods in  _Not Running_ state:
+```
+{{OCP_PODS_NOT_RUNNING}}
+```
+
+##### General information about the pods in the cluster
+```
+{{OCP_PODS_STATUS}}
+```
+
+#### Top 50 most CPU consuming pods
+```
+{{OCP_TOP_PODS_CPU}}
+```
+
+#### Top 50 most Memory consuming pods
+```
+{{OCP_TOP_PODS_MEM}}
+```
+
+#### Top 20 most CPU consuming Nodes
+```
+{{OCP_TOP_NODES_CPU}}
+```
+#### Top 20 most Memory consuming Nodes
+```
+{{OCP_TOP_NODES_MEM}}
+```
+
+#### Cluster Operators Status:
+```
+{{OCP_CO}}
+```
+
+#### Cluster Machine Config Pools: 
+```python
+{{OCP_MCP}}
+```
+
+#### Machine Config Pools Details:
+```python
+{{OCP_MCP_STATUS}}
+```
+
+#### Volume Snapshots
+```python
+{{OCP_VOLUMESNAPSHOTS}}
+```
+
+#### PVCs not bounded
+```python
+{{OCP_PVCS}}
+```
+
+####  API's Presenting fail messages
+```python
+{{OCP_API_RESOURCES}}
+```
+
+### Default Namespace events
+```python
+{{OCP_EVENTS_DEFAULT_NAMESPACE}}
+```
+
+
+
+
+

@@ -1,0 +1,317 @@
+---
+ - name: (00/00)Create report directory in /tmp 
+   ansible.builtin.file:
+     path: /tmp/report
+     state: directory
+     mode: '0755'
+    
+ - name: (01/51) Openshift ID
+   shell: oc get clusterversion -o jsonpath='{.items[].spec.clusterID}'
+   ignore_errors: true
+   register: id
+
+ - name: (02/51) Openshift Version
+   shell: oc get clusterversion/version -o jsonpath='{.status.desired.version}'
+   ignore_errors: true
+   register: version
+
+ - name: (03/51) Openshift Update Available
+   shell: oc get clusterversion/version -o jsonpath='{.status.availableUpdates[0].version}'
+   ignore_errors: true
+   register: update
+
+ - name: (04/51) Openshift Channel
+   shell: oc get clusterversion/version -o jsonpath='{.spec.channel}'
+   ignore_errors: true
+   register: channel
+
+ - name: (05/51) Cluster URL
+   shell: oc whoami --show-console=true
+   ignore_errors: true
+   register: console
+
+ - name: (06/51) Cluster DNS
+   shell: oc get dns cluster -o jsonpath='{.spec.baseDomain}'
+   ignore_errors: true
+   register: dnsname
+
+ - name: (07/51) Cluster API
+   shell: oc whoami --show-server=true
+   ignore_errors: true
+   register: api
+
+ - name: (08/51) ClusterNetwork
+   shell: oc get networks.operator.openshift.io -o jsonpath='{.items[].spec.defaultNetwork.type}'
+   ignore_errors: true
+   register: defaultNetwork
+
+
+ - name: OpenShiftSDN BLOCK
+   block:
+     - name: (08/51) ClusterNetwork SDN
+       shell: oc get clusternetwork -o jsonpath='{.items[].network}'
+       register: sdn_clusternetwork
+
+     - name: (09/51) Service Network
+       shell: oc get clusternetwork -o jsonpath='{.items[].serviceNetwork}'
+       register: sdn_servicenetwork
+
+     - name: (10/51) Network MTU
+       shell: oc get clusternetwork -o jsonpath='{.items[].mtu}'
+       register: sdn_mtu
+   when: "'OpenShiftSDN' in defaultNetwork.stdout"
+
+
+ - name: OVNKUBERNETES BLOCK
+   block:
+     - name: (08/51) ClusterNetwork
+       shell: oc get networks.operator.openshift.io -o jsonpath='{.items[].spec.clusterNetwork[*].cidr}'
+       ignore_errors: true
+       register: ovn_clusternetwork
+
+     - name: (09/51) Service Network
+       shell: oc get networks.operator.openshift.io -o jsonpath='{.items[].spec.serviceNetwork}'
+       ignore_errors: true
+       register: ovn_servicenetwork
+
+     - name: (10/51) Network MTU
+       shell: oc get networks.operator.openshift.io -o jsonpath='{.items[].spec.defaultNetwork.ovnKubernetesConfig.mtu}{"\n"}'
+       ignore_errors: true
+       register: ovn_mtu
+   when: "'OVNKubernetes' in defaultNetwork.stdout "
+
+ - name: (11/51) OC Version
+   shell: oc version
+   ignore_errors: true
+   register: client_version
+
+ - name: (12/51) Getting pods in all namespaces
+   shell: oc get pods --all-namespaces | grep 'Running' | wc -l
+   ignore_errors: true
+   register: pods
+
+ - name: (13/51) Getting the number of Nodes
+   shell: oc get nodes --no-headers | wc -l
+   ignore_errors: true
+   register: nodes
+
+ - name: (14/51) Getting all namespaces
+   shell: oc get namespaces --all-namespaces --no-headers | wc -l
+   ignore_errors: true
+   register: namespaces
+
+ - name: (15/51) Getting the number of builds
+   shell: oc get builds --all-namespaces -no-headers | wc -l
+   ignore_errors: true
+   register: builds
+
+
+ - name: (16/51) Getting the number of  build configs
+   shell: oc get bc --all-namespaces --no-headers | wc -l
+   ignore_errors: true
+   register: bc
+
+ - name: (17/51) Getting the number of services
+   shell: oc get services --all-namespaces --no-headers | wc -l
+   ignore_errors: true
+   register: services
+
+ - name: (18/51) Getting the number of services
+   shell: oc get route --all-namespaces --no-headers | wc -l
+   ignore_errors: true
+   register: routes
+
+ - name: (19/51) Getting the number of CRDS
+   shell: oc get crd | wc -l
+   ignore_errors: true
+   register: crds
+
+ - name: (20/51) Getting the number of  secrets
+   shell: oc get secret --all-namespaces --no-headers | wc -l
+   ignore_errors: true
+   register: secrets
+
+ - name: (21/51) Getting configmaps
+   shell: oc get cm --all-namespaces --no-headers | wc -l
+   ignore_errors: true
+   register: configmaps
+
+ - name: (22/51) Getting the status off all pods in the cluster
+   shell: oc get pods --all-namespaces | awk '{print $4}' | sort | uniq -cd
+   ignore_errors: true
+   register: pods_status
+
+ - name: (23/51) Getting the quantity of pods by node
+   shell: oc get pods --all-namespaces -o wide | grep -v NODE | awk '{print $8}' | sort | uniq -c | awk '{printf "Pods %-10s Node %-20s\n",$1,$2}'
+   ignore_errors: true
+   register: qtd_pods_node
+
+ - name: (24/51) Getting top 20 nodes by CPU
+   shell: oc adm top nodes --sort-by=cpu | head -n 20
+   ignore_errors: true
+   register: top_nodes_cpu
+
+ - name: (25/51) Getting top 20 nodes by Memory
+   shell: oc adm top nodes --sort-by=memory | head -n 20
+   ignore_errors: true
+   register: top_nodes_mem
+
+ - name: (26/51) Getting 50 top pods by MEmory
+   shell: oc adm top pods --all-namespaces --sort-by=memory | head -n 50
+   ignore_errors: true
+   register: top_pods_mem
+
+ - name: (27/51) Getting  50 top pods by CPU
+   shell: oc adm top pods --all-namespaces --sort-by=cpu | head -n 50
+   ignore_errors: true
+   register: top_pods_cpu
+
+ - name: (28/51) Getting CSR in all namespaces
+   shell: oc get csr --all-namespaces
+   ignore_errors: true
+   register: csr
+
+ - name: (29/51) Getting the Cluster Operators Status
+   shell: oc get co
+   ignore_errors: true
+   register: clusteroperators
+
+ - name: (30/51) Getting the Machine Config Pool Status
+   shell: oc get mcp
+   ignore_errors: true
+   register: mcp
+
+ - name: (31/51) Getting Pods NOT Running
+   shell: oc get pods --all-namespaces | egrep -v 'Running|Completed' | wc -l
+   ignore_errors: true
+   register: pods_not_running
+
+ - name: (32/51) Getting API Resources with errors
+   shell: oc api-resources |grep -i error
+   ignore_errors: true
+   register: api_resources
+
+ - name: (33/51) Update cluster - last update started
+   shell: oc get clusterversion -o jsonpath='{ .items[].status.history[].startedTime}{"\n"}'
+   ignore_errors: true
+   register: update_start
+
+ - name: (34/51) Update cluster - last update completed
+   shell: oc get clusterversion -o jsonpath='{ .items[].status.history[].completionTime}{"\n"}'
+   ignore_errors: true
+   register: update_completed
+
+ - name: (35/51) Update cluster - uptadate path available
+   shell: oc get clusterversion -o jsonpath='[{ .items[].status.history[*].version}]{"\n"}'
+   ignore_errors: true
+   register: update_path
+
+ - name: (36/51) APIs In Use that will be removed in nexts updates of kubernets
+   shell: for i in $(oc get apirequestcounts -o jsonpath='{range .items[?(@.status.removedInRelease!="")]}{.status.removedInRelease}{"\t"}{.metadata.name}{"\n"}{end}' | awk '{print $2}'); do oc get apirequestcounts $i --no-headers ; done
+   ignore_errors: true
+   register: apirequestcounts
+
+ - name: (37/51)Check if the instalation was IPI or UPI
+   shell:  oc get cm openshift-install --no-headers -o=custom-columns=NAME:metadata.name -n openshift-config
+   register: instalation_check
+   ignore_errors: true
+
+ - name: (38/51)Collect Provider information
+   shell: oc get cm cluster-config-v1 -n kube-system -o yaml | grep apiVIP -A 9
+   register: ipi_provider
+   when: instalation_check is succeeded
+   # fail on 4.12
+   ignore_errors: true
+
+ - name: (39/51) Register variable in case of success
+   ansible.builtin.shell: echo "IPI"
+   register: instalation_ipi
+   when: instalation_check is succeeded
+
+ - name: (40/51) Register variable in case of failure
+   shell: echo 'UPI'
+   register: instalation_upi
+   when: instalation_check is failed
+
+ - name: (41/51) MCP Status
+   shell:
+     cmd: |
+      oc get mcp -o jsonpath='{range.items[*]}{"\n MCP: "}{.metadata.name}{" \n Paused: "}{$.spec.paused}{" \n MachineCount: "}{$.status.machineCount}{" \n Max_Unavailable: "}{$.spec.maxUnavailable}{" \n Degraded: "}{$.status.degradedMachineCount}{" \n Message: "}{$.status.conditions[?(@.type=="NodeDegraded")].message}{"\n"}{"\n"}{end}'
+   ignore_errors: true
+   register: mcp_status
+
+ - name:  (42/51) Master Nodes Capacity
+   shell:
+     cmd: |
+       oc get nodes -l node-role.kubernetes.io/master= -o jsonpath='{range .items[*]} {"\n Node: "}{.metadata.name} {" \n Kernel: "}{.status.nodeInfo.kernelVersion} {"\n KubeletVersion: "}{.status.nodeInfo.kubeletVersion} {" \n CPU: "}{.status.capacity.cpu} {"\n MEM: "}{.status.capacity.memory} {"\n Ephemeral Storage: "}{.status.capacity.ephemeral-storage}{" \n Adreess:  "}{$.status.addresses[:1].address} {"\n"}{"\n"}{end}'
+   ignore_errors: true
+   register: master_nodes
+
+ - name:  (43/51) Volume Snapshots
+   shell:
+     cmd: oc get volumesnapshots -A 
+   ignore_errors: true
+   register: volumesnapshots
+
+ - name:  (44/51) Events in default namespace
+   shell:
+     cmd: oc get ev -n default --sort-by lastTimestamp | grep -iv dns
+   ignore_errors: true
+   register: events_default_namespace
+
+ - name: (45/51) PVCs in unbound and error state
+   shell: oc get pvc -A |grep -v Bound
+   ignore_errors: true
+   register: pvcs
+
+ - set_fact:
+     OCP_VERSION: "{{ version.stdout | default('NO DATA', true) }}"
+     OCP_UPDATE: "{{ update.stdout  | default('NO DATA', true) }}"
+     OCP_CHANNEL: "{{ channel.stdout | default('NO DATA', true)  }} "
+     OCP_ID: "{{ id.stdout | default('NO DATA', true) }}"
+     OCP_CONSOLE: "{{ console.stdout | default('NO DATA', true) }}"
+     OCP_DNSNAME: "{{ dnsname.stdout | default('NO DATA', true) }}"
+     OCP_API: "{{ api.stdout | default('NO DATA', true) }}"
+     OCP_CLUSTERNETWORK: "{{ ovn_clusternetwork.stdout | default( sdn_clusternetwork.stdout, true) }}"
+     OCP_SERVICENETWORK: "{{ ovn_servicenetwork.stdout | default( sdn_servicenetwork.stdout, true) }}"
+     OCP_MTU: "{{ ovn_mtu.stdout | default( sdn_mtu.stdout, true) }}"
+     OCP_CLIENT_VERSION: "{{ client_version.stdout | default('NO DATA', true) }}"
+     OCP_PODS: "{{ pods.stdout | default('NO DATA', true) }}"
+     OCP_NODES: "{{ nodes.stdout | default('NO DATA', true) }}"
+     OCP_NAMESPACES: "{{ namespaces.stdout | default('NO DATA', true) }}"
+     OCP_BUILDS: "{{ builds.stdout | default('NO DATA', true) }}"
+     OCP_BC: "{{ bc.stdout | default('NO DATA', true) }}"
+     OCP_SERVICES: "{{ services.stdout | default('NO DATA', true) }}"
+     OCP_ROUTES: "{{ routes.stdout | default('NO DATA', true) }}"
+     OCP_CRDS: "{{ crds.stdout | default('NO DATA', true) }}"
+     OCP_SECRETS: "{{ secrets.stdout | default('NO DATA', true) }}"
+     OCP_CONFIGMAPS: "{{ configmaps.stdout | default('NO DATA', true) }}"
+     OCP_QTD_PODS_NODE: "{{ qtd_pods_node.stdout | default('NO DATA', true) }}"
+     OCP_TOP_NODES_CPU: "{{ top_nodes_cpu.stdout | default('NO DATA', true) }}"
+     OCP_TOP_PODS_CPU: "{{ top_pods_cpu.stdout | default('NO DATA', true) }}"
+     OCP_TOP_NODES_MEM: "{{ top_nodes_mem.stdout | default('NO DATA', true) }}"
+     OCP_TOP_PODS_MEM: "{{ top_pods_mem.stdout | default('NO DATA', true) }}"
+     OCP_CSRS: "{{ csr.stdout | default('NO DATA', true) }}"
+     OCP_CO: "{{ clusteroperators.stdout | default('NO DATA', true) }}"
+     OCP_MCP: "{{ mcp.stdout | default('NO DATA', true) }}"
+     OCP_PODS_NOT_RUNNING: "{{pods_not_running.stdout | default('NO DATA', true) }}"
+     OCP_API_RESOURCES: "{{api_resources.stdout | default('NO DATA', true) }}"
+     OCP_PODS_STATUS: "{{pods_status.stdout | default('NO DATA', true) }}"
+     OCP_APIREQUESTCOUNT: "{{apirequestcounts.stdout}}"
+     OCP_MASTER_NODES: "{{master_nodes.stdout | default('NO DATA', true)}}"
+     OCP_MCP_STATUS: "{{mcp_status.stdout | default('NO DATA', true)}}"
+     OCP_PVCS: "{{pvcs.stdout | default('NO DATA', true)}}" 
+     OCP_UPDATE_START: "{{update_start.stdout | default('NO DATA', true)}}"
+     OCP_UPDATE_COMPLETED: "{{update_completed.stdout | default('NO DATA', true)}}"
+     OCP_UPDATE_PATH: "{{update_path.stdout | default('NO DATA', true)}}"  
+     OCP_INSTALATION_CHECK: "{{instalation_check.stdout| default('NO DATA', true)}}"
+     OCP_API_PROVIDER: "{{ipi_provider.stdout| default('NO DATA', true)}}"
+     OCP_INSTALATION_IPI: "{{instalation_ipi.stdout| default('NO DATA', true)}}"
+     OCP_INSTALATION_UPI: "{{instalation_upi.stdout| default('NO DATA', true)}}"
+     OCP_VOLUMESNAPSHOTS: "{{volumesnapshots.stdout| default('NO DATA', true)}}"
+     OCP_EVENTS_DEFAULT_NAMESPACE: "{{events_default_namespace.stdout| default('NO DATA', true)}}" 
+
+ - name: (46/51) Create Report
+   template:
+     src: cluster-info.md.j2
+     dest: /tmp/report/cluster.md

@@ -1,0 +1,3 @@
+---
+ - name: Openshift Authentication
+   shell: 'if  [ -z "$TOKEN" ] && [ ! -z "$PASSWORD" ] ; then oc login -u $OCP_USER -p "$PASSWORD" $URL $INSECURE; elif [ -z "$PASSWORD" ] && [ -z "$TOKEN" ] ; then echo $HOSTNAME; else oc login --token "$TOKEN" $URL $INSECURE; fi'

@@ -1,0 +1,446 @@
+<!doctype html>
+<html>
+<head>
+        <title>General Information of cluster {{OCP_DNSNAME}} </title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.collapsible:after {
+  content: '\002B';
+  color: white;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #f1f1f1;
+}
+</style>
+</head>
+<body>
+<h1>OCP4 Cluster Report</h1>
+
+<p>This cluster report have the initial data of the cluster</p>
+
+<h2>Summary</h2>
+
+<h3>Cluster info:</h3>
+<button class="collapsible">Openshift Cluster {{OCP_DNSNAME}}  </button>
+<div class="content">
+<table class="tableblock frame-all grid-all stretch table" style="text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; border-collapse: collapse; border-spacing: 0px; background: white; margin-bottom: 20px; border: 1px solid rgb(221, 221, 221); font-size: 15px; max-width: 100%; width: 760px; font-family: RedHatText, Overpass, &quot;Open Sans&quot;, Helvetica, Arial, sans-serif;">
+        <thead style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; background: whitesmoke; font-weight: bold;">
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                        <th class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; text-align: left; font-size: inherit; color: rgb(51, 51, 51); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-top-style: initial; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: initial; border-right-color: rgb(221, 221, 221); border-bottom-color: rgb(221, 221, 221); border-left-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">Cluster INFO</th>
+                </tr>
+        </thead>
+        <tbody style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">ID</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_ID}}</p>
+                        </td>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">Network</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_CLUSTERNETWORK}}</p>
+                        </td>
+                </tr>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">Service Network</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_SERVICENETWORK}}</p>
+                        </td>
+                </tr>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">MTU</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_MTU}}</p>
+                        </td>
+                </tr>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">URL</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_CONSOLE}}</p>
+                        </td>
+                </tr>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">API</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_API}}</p>
+                        </td>
+                </tr>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">Version</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_VERSION}}</p>
+                        </td>
+                </tr>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">Channel</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_CHANNEL}}</p>
+                        </td>
+                </tr>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">Update</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_UPDATE}}</p>
+                        </td>
+                </tr>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">OC Version</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_CLIENT_VERSION}}</p>
+                        </td>
+                </tr>                
+        </tbody>
+</table>
+</div>
+
+<p>&nbsp;</p>
+
+<button class="collapsible">Openshift Maximus Tested versus Cliente Cluster </button>
+<div class="content">
+<table class="tableblock frame-all grid-all stretch table" style="text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; border-collapse: collapse; border-spacing: 0px; background: white; margin-bottom: 20px; border: 1px solid rgb(221, 221, 221); font-size: 15px; max-width: 100%; width: 760px; font-family: RedHatText, Overpass, &quot;Open Sans&quot;, Helvetica, Arial, sans-serif;">
+        <thead style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; background: whitesmoke; font-weight: bold;">
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                        <th class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; text-align: left; font-size: inherit; color: rgb(51, 51, 51); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-top-style: initial; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: initial; border-right-color: rgb(221, 221, 221); border-bottom-color: rgb(221, 221, 221); border-left-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">Maximum type</th>
+                        <th class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; text-align: left; font-size: inherit; color: rgb(51, 51, 51); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-top-style: initial; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: initial; border-right-color: rgb(221, 221, 221); border-bottom-color: rgb(221, 221, 221); border-left-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">4.x tested maximum</th>
+                        <th class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; text-align: left; font-size: inherit; color: rgb(51, 51, 51); line-height: 1.42857; border-width: 0px 0px 1px; border-top-style: initial; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-color: initial; border-right-color: rgb(221, 221, 221); border-bottom-color: rgb(221, 221, 221); border-left-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">{{OCP_DNSNAME}} Cluster</th>
+                </tr>
+        </thead>
+        <tbody style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">Number of nodes</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">2,000</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 0px 1px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_NODES}}</p>
+                        </td>
+                </tr>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; background: rgb(249, 249, 249);">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">Number of pods&nbsp;</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">150,000</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 0px 1px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_PODS}}</p>
+                        </td>
+                </tr>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">Number of pods per node;<span style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; vertical-align: baseline; font-size: 9.66px; line-height: 0; position: relative; top: -0.5em;">[2]</span></p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">250</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 0px 1px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">DEFINIR COLETA</p>
+                        </td>
+                </tr>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; background: rgb(249, 249, 249);">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">Number of namespaces;</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">10,000</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 0px 1px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_NAMESPACES}}</p>
+                        </td>
+                </tr>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">Number of builds</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">10,000 (Default pod RAM 512 Mi) - Source-to-Image (S2I) build strategy</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 0px 1px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_BUILDS}}</p>
+                        </td>
+                </tr>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; background: rgb(249, 249, 249);">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">Number of secrets</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">80,000</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 0px 1px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_SECRETS}}</p>
+                        </td>
+                </tr>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">Number of config maps</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">90,000</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 0px 1px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_CONFIGMAPS}}</p>
+                        </td>
+                </tr>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; background: rgb(249, 249, 249);">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">Number of services</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">10,000</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 0px 1px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_SERVICES}}</p>
+                        </td>
+                </tr>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased;">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">Number of build configs</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">12,000</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 0px 1px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_BC}}</p>
+                        </td>
+                </tr>
+                <tr style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; background: rgb(249, 249, 249);">
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">Number of custom resource definitions (CRD)</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 1px 1px 0px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">512</p>
+                        </td>
+                        <td class="tableblock halign-left valign-top" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; padding: 8px; font-size: 14px; color: rgb(84, 84, 84); line-height: 1.42857; border-width: 0px 0px 1px; border-style: solid; border-color: rgb(221, 221, 221); border-image: initial; vertical-align: top;">
+                        <p class="tableblock" style="box-sizing: border-box; text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; margin: 0px; line-height: 1.6; font-size: 0.92em;">{{OCP_CRDS}}</p>
+                        </td>
+                </tr>
+        </tbody>
+</table>
+</div>
+
+<p>&nbsp;</p>
+
+<button class="collapsible">OCP POD STATUS</button>
+<div class="content">
+  <table border="0">
+    <tr>
+      <td bgcolor="silver" style="color:#050505">
+        <pre> {{OCP_PODS_STATUS}}
+  </pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>&nbsp;</p>
+
+<button class="collapsible">Top 20 Nodes CPU</button>
+<div class="content">
+  <table border="0">
+    <tr>
+      <td bgcolor="silver" style="color:#050505">
+        <pre> {{OCP_TOP_NODES_CPU}}
+  </pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>&nbsp;</p>
+
+<button class="collapsible">Top 20 Nodes MEM</button>
+<div class="content">
+  <table border="0">
+    <tr>
+      <td bgcolor="silver" style="color:#050505">
+        <pre> {{OCP_TOP_NODES_MEM}}
+  </pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>&nbsp;</p>
+
+<button class="collapsible">Top 50 PODS CPU</button>
+<div class="content">
+  <table border="0">
+    <tr>
+      <td bgcolor="silver" style="color:#050505">
+        <pre> {{OCP_TOP_PODS_CPU}}
+  </pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>&nbsp;</p>
+
+<button class="collapsible">Top 50 PODS MEM</button>
+<div class="content">
+  <table border="0">
+    <tr>
+      <td bgcolor="silver" style="color:#050505">
+        <pre> {{OCP_TOP_PODS_MEM}}
+  </pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>&nbsp;</p>
+
+<button class="collapsible">Get CSR</button>
+<div class="content">
+  <table border="0">
+    <tr>
+      <td bgcolor="silver" style="color:#050505">
+        <pre> {{OCP_CSRS}}
+  </pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>&nbsp;</p>
+
+<button class="collapsible">Get ClusterOperators</button>
+<div class="content">
+  <table border="0">
+    <tr>
+      <td bgcolor="silver" style="color:#050505">
+        <pre> {{OCP_CO}}
+  </pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>&nbsp;</p>
+
+<button class="collapsible">Get MachineConfigPool</button>
+<div class="content">
+  <table border="0">
+    <tr>
+      <td bgcolor="silver" style="color:#050505">
+        <pre> {{OCP_MCP}}
+  </pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>&nbsp;</p>
+
+<button class="collapsible">Pods Not Running</button>
+<div class="content">
+  <table border="0">
+    <tr>
+      <td bgcolor="silver" style="color:#050505">
+        <pre> {{OCP_PODS_NOT_RUNNING}}
+  </pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>&nbsp;</p>
+
+<button class="collapsible">API Resources With Problems</button>
+<div class="content">
+  <table border="0">
+    <tr>
+      <td bgcolor="silver" style="color:#050505">
+        <pre> {{OCP_API_RESOURCES}}
+  </pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+
+<p>&nbsp;</p>
+
+<button class="collapsible">APIs to be removed in next kubernetes update x daily usage</button>
+<div class="content">
+  <table border="0">
+    <tr>
+      <td bgcolor="silver" style="color:#050505">
+        <pre> {{OCP_APIREQUESTCOUNT}}
+  </pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    }
+  });
+}
+</script>
+
+</body>
+</html>
+

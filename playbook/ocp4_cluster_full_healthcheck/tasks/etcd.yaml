@@ -1,0 +1,55 @@
+---
+ - name: (01) ETCD Member List
+   shell: etcd_node=`oc get pods -n openshift-etcd -l app=etcd -o=jsonpath='{.items[0].spec.nodeName}'` && oc rsh -n openshift-etcd  etcd-$etcd_node etcdctl member list -w table 
+   ignore_errors: true
+   register: ETCD_MEMBER_LIST
+
+ - name: (02) ETCD Health
+   shell: etcd_node=`oc get pods -n openshift-etcd -l app=etcd -o=jsonpath='{.items[0].spec.nodeName}'` && oc rsh -n openshift-etcd  etcd-$etcd_node etcdctl endpoint health --cluster
+   ignore_errors: true
+   register: ETCD_MEMBER_HEALTH_CLUSTER
+
+ - name: (03) ETCD Endpoints Status
+   shell: etcd_node=`oc get pods -n openshift-etcd -l app=etcd -o=jsonpath='{.items[0].spec.nodeName}'` && oc rsh -n openshift-etcd  etcd-$etcd_node etcdctl endpoint health -w table
+   ignore_errors: true
+   register: ETCD_ENDPOINT_HEALTH
+
+ - name: (04) ETCD Endpoints Status Cluster
+   shell: etcd_node=`oc get pods -n openshift-etcd -l app=etcd -o=jsonpath='{.items[0].spec.nodeName}'` && oc rsh -n openshift-etcd  etcd-$etcd_node etcdctl endpoint status -w table --cluster
+   ignore_errors: true
+   register: ETCD_ENDPOINT_HEALTH_CLUSTER
+
+ - name: (06) ETCD Revision Check
+   shell: etcd_node=`oc get pods -n openshift-etcd -l app=etcd -o=jsonpath='{.items[0].spec.nodeName}'` && oc rsh -n openshift-etcd  etcd-$etcd_node etcdctl endpoint status -w fields | grep Revision
+   ignore_errors: true
+   register: ETCD_ENDPOINT_REVISION
+
+ - name: (07) ETCD Revision Degrafmentation
+   shell: etcd_pod=`oc get pods -n openshift-etcd-operator -o custom-columns=POD:metadata.name  --no-headers` && oc logs --tail=3 $etcd_pod -n openshift-etcd-operator
+   ignore_errors: true
+   register: ETCD_DEFRAGMENTATION
+
+ - name: (08) Check etcd backup on master
+   shell: for i in $(oc get nodes -l node-role.kubernetes.io/master -o custom-columns=:.metadata.name); do oc debug node/$i -- chroot /host ls -lah /home/core/backup; done
+   ignore_errors: true
+   register: ETCD_LOCAL_BACKUP
+
+ - name: ( ) Check etcd pod status
+   shell: oc get pods -o wide -n openshift-etcd
+   register: ETCD_PODS
+
+ - name: () Check events in the Openshift-etcd Namespace
+   shell: oc get events --sort-by=.lastTimestamp -n openshift-etcd
+   register: ETCD_EVENTS
+ 
+ - name: (11) Check Objets in ETCD datase - using Prometheus
+   shell:
+     cmd: |
+         curl -ks -gH "Authorization: Bearer $(oc whoami -t)" "https://$(oc get route prometheus-k8s -n openshift-monitoring -o jsonpath='{.spec.host}')/api/v1/query" -d 'query=sort_desc( sum(etcd_object_counts) by (resource))' |  jq -r '.data.result[] | .metric.resource,.value[1]'
+   register: ETCD_OBJECTS
+   ignore_errors: true
+
+ - name: (08) Create Report
+   template:
+     src: etcd-info.md.j2
+     dest: /tmp/report/report_etcd.md

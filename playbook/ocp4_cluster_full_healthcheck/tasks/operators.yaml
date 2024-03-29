@@ -1,0 +1,31 @@
+---
+ - name: (01) Check CSVs without success
+   shell: oc get csv -A | sort -u | grep -v Succeeded$
+   ignore_errors: true
+   register: csv
+
+ - name: (02) Check install plans not approved
+   shell: oc get ip -A |sort -u | grep -v true$
+   ignore_errors: true
+   register: install_plan
+
+
+ - name: (03) Get Installed Operators
+   shell: oc get operators
+   ignore_errors: true
+   register: operators
+
+
+
+ - set_fact:
+     CSV_STATUS: "{{ csv.stdout }}"
+     INSTALL_PLAN: "{{ install_plan.stdout  }}"
+     OPERATORS: "{{operators.stdout}}"
+
+
+
+ - name: (04) Create Report
+   template:
+     src: operators.j2
+     # TEMPLATE NOT FOUND  operators.md.j2
+     dest: /tmp/report/report_operators.md

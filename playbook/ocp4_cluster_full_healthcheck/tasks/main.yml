@@ -1,0 +1,8 @@
+---
+# tasks file for collector
+- include_tasks: authentication.yaml
+- include_tasks: coleta.yaml
+- include_tasks: etcd.yaml
+- include_tasks: odf.yaml
+- include_tasks: operators.yaml
+

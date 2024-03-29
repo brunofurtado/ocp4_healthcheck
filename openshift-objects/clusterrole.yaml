@@ -1,0 +1,28 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ocp-ansible-healthcheck
+rules:
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - '*'
+  resources:
+  - pods/exec
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+- nonResourceURLs:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch

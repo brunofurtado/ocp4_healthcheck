@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+<head>
+        <title>General Information of cluster </title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.collapsible:after {
+  content: '\002B';
+  color: white;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #f1f1f1;
+}
+</style>
+</head>
+<body>
+<h1>OCP4 Cluster Report - ETCD Status and Health</h1>
+
+<p>This cluster report have the initial data of the cluster</p>
+
+<h2>Summary</h2>
+<p>Essa Sessão é dedicada a analise dos status do banco de dados ETCD.</p>
+<p>O desempenho do etcd afeta o cluster como um todo, inconsistencias, lentidão ou alta fragmentação do banco</p>
+<p>causam degradaçao dos serviços.</p>
+<p>A verificaçáo dos valores de Raft Index, DBSize e revision permitem um overview do estado de saude do banco.</p>
+<p>Obs: ETCD é extremamente sensivel a latencia de disco, portanto é preciso validar se lentidão ou mensagens de </p>
+<p>erro associadas a ele não são problemas na estrutura que hospeda o cluster.</p>
+
+<button class="collapsible">ETCD Member List</button>
+<div class="content">
+  <table border="0">
+    <tr>
+      <td bgcolor="silver" style="color:#050505">
+        <pre> {{ETCD_MEMBER_LIST.stdout_lines|join('\n')}}
+  </pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>&nbsp;</p>
+
+<button class="collapsible">ETCD Member Health</button>
+<div class="content">
+  <table border="0">
+    <tr>
+      <td bgcolor="silver" style="color:#050505">
+        <pre> {{ETCD_MEMBER_HEALTH_CLUSTER.stdout_lines|join('\n')}}
+  </pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>&nbsp;</p>
+
+
+<button class="collapsible">ETCD Endpoint Health</button>
+<div class="content">
+  <table border="0">
+    <tr>
+      <td bgcolor="silver" style="color:#050505">
+        <pre> {{ETCD_ENDPOINT_HEALTH.stdout_lines|join('\n')}}
+  </pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>&nbsp;</p>
+
+<button class="collapsible">ETCD Endpoint Health Cluster</button>
+<div class="content">
+  <table border="0">
+    <tr>
+      <td bgcolor="silver" style="color:#050505">
+        <pre> {{ETCD_ENDPOINT_HEALTH_CLUSTER.stdout_lines|join('\n')}}
+  </pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>&nbsp;</p>
+
+<button class="collapsible">ETCD Revision</button>
+<div class="content">
+  <table border="0">
+    <tr>
+      <td bgcolor="silver" style="color:#050505">
+        <pre> {{ETCD_ENDPOINT_REVISION.stdout_lines|join('\n')}}
+  </pre>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>&nbsp;</p>
+
+
+<button class="collapsible">ETCD Fragmentation Status </button>
+<div class="content">
+  <table border="0">
+    <tr>
+      <td bgcolor="silver" style="color:#050505">
+        <pre> {{ETCD_DEFRAGMENTATION.stdout_lines|join('\n')}}
+  </pre>
+      </td>
+    </tr>
+  </table>
+</div>
+<p>&nbsp;</p>
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    }
+  });
+}
+</script>
+</body>
