@@ -26,14 +26,15 @@ fi
 
 if [ -d "$LOCALDIR/report" ]
 then
-  echo "" 
-  echo "Compacting the report ..." 
-  tar czf /tmp/report.tgz /tmp/report
   echo ""
-  echo "Report created! Please, upload the /tmp/report.tgz file."
+  echo "Compacting the report ..."
+  tar czf $LOCALDIR/report.tgz $LOCALDIR/report
+  echo ""
+  echo "Report created! Please, upload the $LOCALDIR/report.tgz file."
 else
   echo "There is a problem with the $LOCALDIR directory."
 fi
+
 ~~~
 
 
