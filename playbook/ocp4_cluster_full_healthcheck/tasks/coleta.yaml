@@ -153,13 +153,13 @@
    ignore_errors: true
    register: qtd_pods_node
 
- - name: Getting top 20 nodes by CPU
-   shell: oc adm top nodes --sort-by=cpu | head -n 20
+ - name: Getting top 10 nodes by CPU
+   shell: oc adm top nodes --sort-by=cpu | head -n 10
    ignore_errors: true
    register: top_nodes_cpu
 
- - name: Getting top 20 nodes by Memory
-   shell: oc adm top nodes --sort-by=memory | head -n 20
+ - name: Getting top 10 nodes by Memory
+   shell: oc adm top nodes --sort-by=memory | head -n 10
    ignore_errors: true
    register: top_nodes_mem
 
