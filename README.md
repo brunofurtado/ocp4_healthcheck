@@ -4,6 +4,29 @@ Usage
 Local execution 
 ===
 
+
+~~~
+#/bin/bash
+#
+TOKEN=$(oc whoami -t)
+URL="$(oc whoami --show-server)"
+TLS=true
+LOCALDIR=/tmp
+
+if [ "$TLS" = true ] then
+  podman run -e TOKEN=$TOKEN -e URL=$URL -v $LOCALDIR:/tmp quay.io/rhn_support_bfurtado/ocp4-healthcheck:latest
+else
+  podman run -e TOKEN=$TOKEN -e URL=$URL -e INSECURE="--insecure-skip-tls-verify" -v $LOCALDIR:/tmp quay.io/rhn_support_bfurtado/ocp4-healthcheck:latest
+fi
+
+echo "" 
+echo "Compacting the report ..." 
+tar czf /tmp/report.tgz /tmp/report
+echo "" echo "Report created! Please, upload the /tmp/report.tgz file."
+~~~
+
+
+
 * The host directory must be configured with the context container_file_t .
 
 __
