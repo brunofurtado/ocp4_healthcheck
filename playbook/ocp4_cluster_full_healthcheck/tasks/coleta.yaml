@@ -216,7 +216,7 @@
    ignore_errors: true
 
  - name: Collect Provider information
-   shell: oc get infrastructures/cluster -o=custom-columns=Platform:.spec.platformSpec.type
+   shell: oc get infrastructures/cluster --no-headers -o=custom-columns=Platform:.spec.platformSpec.type
    ignore_errors: true
    register: platform
 
