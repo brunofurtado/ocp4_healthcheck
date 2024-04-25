@@ -105,13 +105,14 @@
    when: "'OVNKubernetes' in defaultNetwork.stdout "
 
  - name: Proxy must allow the communication between the cluster nodes and masters.
-   ansible.builtin.shell: oc get proxy cluster -o jsonpath='
+   ansible.builtin.shell: 
+     cmd: |
+       oc get proxy cluster -o jsonpath='
          {"HTTP_PROXY: "}{.status.httpProxy}
          {"HTTPS_PROXY: "}{.status.httpsProxy}
          {"NO_PROXY: "}{.status.noProxy}
          {"READINESS ENDPOINTS: "}{.status.readinessEndpoints[*]}
          {"TRUSTED CA: "}{.status.trustedCA}
-         {"\n"}
          {"\n"}'
    ignore_errors: true
    changed_when: false
