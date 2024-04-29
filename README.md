@@ -6,34 +6,46 @@ Local execution
 
 
 ~~~
-#/bin/bash
+#!/bin/bash
 #
 TOKEN=$(oc whoami -t)
 URL="$(oc whoami --show-server)"
 TLS=false
-LOCALDIR=/tmp/report
+LOCALDIR=/tmp/ocp4_healthcheck
 
-mkdir $LOCALDIR
-chcon -Rt container_file_t $LOCALDIR
-restorecon -R $LOCALDIR
-
-if [ "$TLS" = true ]
-then
-  podman run -e TOKEN=$TOKEN -e URL=$URL -v $LOCALDIR:/tmp quay.io/rhn_support_bfurtado/ocp4-healthcheck:latest
+function prepareDirectory() {
+if [ ! -d $LOCALDIR ]; then
+  mkdir $LOCALDIR
+  chcon -Rt container_file_t $LOCALDIR
+  restorecon -RvF $LOCALDIR
 else
-  podman run -e TOKEN=$TOKEN -e URL=$URL -e INSECURE="--insecure-skip-tls-verify" -v $LOCALDIR:/tmp quay.io/rhn_support_bfurtado/ocp4-healthcheck:latest
+  chcon -Rt container_file_t $LOCALDIR
+  restorecon -RvF $LOCALDIR
 fi
+}
 
-if [ -d "$LOCALDIR/report" ]
-then
-  echo ""
-  echo "Compacting the report ..."
-  tar czf $LOCALDIR/report.tgz $LOCALDIR/report
-  echo ""
-  echo "Report created! Please, upload the $LOCALDIR/report.tgz file."
+function healthCheck() {
+if [ "$TLS" = true ]; then
+  podman run -e TOKEN=$TOKEN -e URL=$URL -v $LOCALDIR:/tmp quay.io/rhn_support_bfurtado/ocp4-healthcheck
 else
-  echo "There is a problem with the $LOCALDIR directory."
+  podman run -e TOKEN=$TOKEN -e URL=$URL -e INSECURE="--insecure-skip-tls-verify" -v $LOCALDIR:/tmp quay.io/rhn_support_bfurtado/ocp4-healthcheck
 fi
+}
+
+function compactReport() {
+echo ""
+echo "Compacting the report ..."
+
+tar czf $LOCALDIR/report.tgz $LOCALDIR/report
+
+echo ""
+echo "Report created! Please, share the $LOCALDIR/report.tgz ."
+}
+
+
+prepareDirectory
+healthCheck
+compactReport
 
 ~~~
 
