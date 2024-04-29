@@ -11,7 +11,8 @@ Local execution
 TOKEN=$(oc whoami -t)
 URL="$(oc whoami --show-server)"
 TLS=false
-LOCALDIR=/tmp/ocp4_healthcheck
+CLUSTER_ID=$(oc get clusterversion -o jsonpath='{.items[].spec.clusterID}{"\n"}')
+LOCALDIR=/tmp/$CLUSTER_ID
 
 function prepareDirectory() {
 if [ ! -d $LOCALDIR ]; then
