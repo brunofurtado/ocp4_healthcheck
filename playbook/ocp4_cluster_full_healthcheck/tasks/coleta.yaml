@@ -329,6 +329,21 @@
    ignore_errors: true
    register: pvcs
 
+ - name: Amount of master nodes
+   ansible.builtin.shell: oc get nodes -l node-role.kubernetes.io/master= --no-headers | wc -l
+   ignore_errors: true
+   register: amt_master_node
+
+ - name: Amount of worker nodes
+   ansible.builtin.shell: oc get nodes -l node-role.kubernetes.io/worker= --no-headers | wc -l
+   ignore_errors: true
+   register: amt_worker_node
+
+ - name: Amount of infra nodes
+   ansible.builtin.shell: oc get nodes -l node-role.kubernetes.io/infra= --no-headers | wc -l
+   ignore_errors: true
+   register: amt_infra_node
+
  - set_fact:
      OCP_VERSION: "{{ version.stdout | default('NO DATA', true) }}"
      OCP_UPDATE: "{{ update.stdout  | default('NO DATA', true) }}"
@@ -376,6 +391,9 @@
      OCP_INSTALATION_IPI: "{{instalation_ipi.stdout | default('NO DATA', true)}}"
      OCP_INSTALATION_UPI: "{{instalation_upi.stdout | default('NO DATA', true)}}"
      OCP_PLATFORM: "{{platform.stdout| default('NO DATA', true)}}"
+     OCP_AMT_MASTER_NODE: "{{amt_master_node.stdout| default('NO DATA', true)}}"
+     OCP_AMT_WORKER_NODE: "{{amt_worker_node.stdout| default('NO DATA', true)}}"
+     OCP_AMT_INFRA_NODE: "{{amt_infra_node.stdout| default('NO DATA', true)}}"
      OCP_VOLUMESNAPSHOTS: "{{volumesnapshots.stdout | default('NO DATA', true)}}"
      OCP_EVENTS_DEFAULT_NAMESPACE: "{{events_default_namespace.stdout | default('NO DATA', true)}}" 
 
