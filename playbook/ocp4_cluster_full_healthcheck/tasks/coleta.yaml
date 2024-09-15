@@ -118,7 +118,14 @@
    changed_when: false
    register: proxy
 
- - name: Getting pods in all namespaces
+ - name: Getting ingresscontrollers
+   ansible.builtin.shell:
+     cmd: oc get ingresscontrollers -n openshift-ingress-operator
+   ignore_errors: true
+   changed_when: false
+   register: ingresscontrollers
+
+ - name: Getting running pods in all namespaces
    ansible.builtin.shell: oc get pods --all-namespaces | grep 'Running' | wc -l
    ignore_errors: true
    register: pods
@@ -364,6 +371,7 @@
      OCP_BUILDS: "{{ builds.stdout | default('NO DATA', true) }}"
      OCP_BC: "{{ bc.stdout | default('NO DATA', true) }}"
      OCP_SERVICES: "{{ services.stdout | default('NO DATA', true) }}"
+     OCP_INGRESSCONTROLLERS: "{{ ingresscontrollers.stdout | default('NO DATA', true) }}"
      OCP_CRDS: "{{ crds.stdout | default('NO DATA', true) }}"
      OCP_SECRETS: "{{ secrets.stdout | default('NO DATA', true) }}"
      OCP_CONFIGMAPS: "{{ configmaps.stdout | default('NO DATA', true) }}"
