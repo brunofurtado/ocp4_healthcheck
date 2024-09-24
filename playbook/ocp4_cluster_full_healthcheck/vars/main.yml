@@ -1,10 +1,2 @@
 ---
 # vars file for collector
-
-vars_prompt:
-
-  - name: UPSTREAM_DNS_IP
-    prompt: Defina o endereço IP do servidor DNS upstream:
-
-  - name: UPSTREAM_DNS_PORT
-    prompt: Defina a porta do servidor DNS upstream:
