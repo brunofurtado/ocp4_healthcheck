@@ -2,8 +2,8 @@
 - hosts: localhost
   vars_prompt:
   - name: UPSTREAM_DNS_IP
-    prompt: Defina o endereço IP do servidor DNS upstream:
+    prompt: Defina o endereço IP do servidor DNS upstream
   - name: UPSTREAM_DNS_PORT
-    prompt: Defina a porta do servidor DNS upstream:
+    prompt: Defina a porta do servidor DNS upstream
   roles:
   - ocp4_cluster_full_healthcheck
