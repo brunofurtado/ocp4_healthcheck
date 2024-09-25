@@ -6,22 +6,22 @@
 - name: Check to see if there are pods and services created under `openshift-dns-operator`
   ansible.builtin.shell: oc -n openshift-dns-operator get all -o wide
   ignore_errors: true
-  register: dns-operator_all
+  register: dns_operator_all
 
 - name: Endpoints, check to see if there are pods associated to services under `openshift-dns-operator`
   ansible.builtin.shell: oc -n openshift-dns-operator get ep
   ignore_errors: true
-  register: dns-operator_endpoints
+  register: dns_operator_endpoints
 
 - name: Check the logs of dns-operator pod
   ansible.builtin.shell: oc logs pod/'oc get pods -o=jsonpath="{.items[0].metadata.name}" -n openshift-dns-operator' -n openshift-dns-operator 2>/dev/null || oc logs pod/'oc get pods -o=jsonpath="{.items[0].metadata.name}" -n openshift-dns-operator' -c dns-operator -n openshift-dns-operator
   ignore_errors: true
-  register: dns-operator_logs
+  register: dns_operator_logs
 
 - name: Check dns components are running in the openshift-dns project
   ansible.builtin.shell: oc -n openshift-dns get all
   ignore_errors: true
-  register: openshift-dns_all
+  register: openshift_dns_all
 
 - name: Check the pod resolver is pointing to DNS Service IP
   ansible.builtin.shell: export PODS='oc get pods -o=jsonpath="{.items[*].metadata.name}" -n openshift-apiserver'; for pod in $PODS; do oc exec $pod -c openshift-apiserver -n openshift-apiserver -- cat /etc/resolv.conf ; done;
@@ -153,10 +153,10 @@
   register: nslookup
 
 - set_fact:
-    DNS_OPERATOR_ALL: "{{ dns-operator_all.stdout | default('NO DATA', true) }}"
-    DNS_OPERATOR_ENDPOINTS: "{{ dns-operator_endpoints.stdout | default('NO DATA', true) }}"
-    DNS_OPERATOR_LOGS: "{{ dns-operator_logs.stdout | default('NO DATA', true) }}"
-    OPENSHIFT-DNS_ALL: "{{ openshift-dns_all.stdout | default('NO DATA', true) }}"
+    DNS_OPERATOR_ALL: "{{ dns_operator_all.stdout | default('NO DATA', true) }}"
+    DNS_OPERATOR_ENDPOINTS: "{{ dns_operator_endpoints.stdout | default('NO DATA', true) }}"
+    DNS_OPERATOR_LOGS: "{{ dns_operator_logs.stdout | default('NO DATA', true) }}"
+    OPENSHIFT-DNS_ALL: "{{ openshift_dns_all.stdout | default('NO DATA', true) }}"
     DNS_RESOLVER_IP: "{{ dns_resolver_ip.stdout | default('NO DATA', true) }}"
     COREDNS_CONTAINER_LOGS: "{{ coredns_container_logs.stdout | default('NO DATA', true) }}"
     DNS_TCP_RESOLUTION: "{{ dns_tcp_resolution.stdout | default('NO DATA', true) }}"
