@@ -14,7 +14,7 @@
   register: dns-operator_endpoints
 
 - name: Check the logs of dns-operator pod
-  ansible.builtin.shell: oc logs pod/`oc get pods -o=jsonpath="{.items[0].metadata.name}" -n openshift-dns-operator` -n openshift-dns-operator 2>/dev/null || oc logs pod/`oc get pods -o=jsonpath="{.items[0].metadata.name}" -n openshift-dns-operator` -c dns-operator -n openshift-dns-operator
+  ansible.builtin.shell: oc logs pod/'oc get pods -o=jsonpath="{.items[0].metadata.name}" -n openshift-dns-operator' -n openshift-dns-operator 2>/dev/null || oc logs pod/'oc get pods -o=jsonpath="{.items[0].metadata.name}" -n openshift-dns-operator' -c dns-operator -n openshift-dns-operator
   ignore_errors: true
   register: dns-operator_logs
 
@@ -24,12 +24,12 @@
   register: openshift-dns_all
 
 - name: Check the pod resolver is pointing to DNS Service IP
-  ansible.builtin.shell: export PODS=`oc get pods -o=jsonpath="{.items[*].metadata.name}" -n openshift-apiserver`; for pod in $PODS; do oc exec $pod -c openshift-apiserver -n openshift-apiserver -- cat /etc/resolv.conf ; done;
+  ansible.builtin.shell: export PODS='oc get pods -o=jsonpath="{.items[*].metadata.name}" -n openshift-apiserver'; for pod in $PODS; do oc exec $pod -c openshift-apiserver -n openshift-apiserver -- cat /etc/resolv.conf ; done;
   ignore_errors: true
   register: dns_resolver_ip
 
 - name: Check the coredns container logs
-  ansible.builtin.shell: export PODS=`oc get pods -o=jsonpath="{.items[*].metadata.name}" -n openshift-dns -l dns.operator.openshift.io/daemonset-dns=default`; for pod in $PODS; do oc logs $pod -c dns -n openshift-dns|sed "s/^/$pod\t/"; echo; done
+  ansible.builtin.shell: export PODS='oc get pods -o=jsonpath="{.items[*].metadata.name}" -n openshift-dns -l dns.operator.openshift.io/daemonset-dns=default'; for pod in $PODS; do oc logs $pod -c dns -n openshift-dns|sed "s/^/$pod\t/"; echo; done
   ignore_errors: true
   register: coredns_container_logs
 
@@ -39,7 +39,7 @@
 #  ansible.builtin.shell: 
 #    cmd: | 
 #      echo -e "\nTCP\n" \
-#      for dnspod in `oc get pods -n openshift-dns -o name --no-headers -l dns.operator.openshift.io/daemonset-dns=default` \
+#      for dnspod in 'oc get pods -n openshift-dns -o name --no-headers -l dns.operator.openshift.io/daemonset-dns=default' \
 #        do echo "Pod $dnspod" \ 
 #        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} $(oc whoami --show-server) -p ${UPSTREAM_DNS_PORT} +tcp +short \
 #        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} $(oc whoami --show-console) -p ${UPSTREAM_DNS_PORT} +tcp +short \
@@ -54,7 +54,7 @@
 #  ansible.builtin.shell: 
 #    cmd: | 
 #      echo -e "\nUDP\n" \
-#      for dnspod in `oc get pods -n openshift-dns -o name --no-headers -l dns.operator.openshift.io/daemonset-dns=default` \
+#      for dnspod in 'oc get pods -n openshift-dns -o name --no-headers -l dns.operator.openshift.io/daemonset-dns=default' \
 #        do echo "Pod $dnspod" \
 #        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} $(oc whoami --show-server) -p ${UPSTREAM_DNS_PORT} +notcp +short \
 #        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} $(oc whoami --show-console) -p ${UPSTREAM_DNS_PORT} +notcp +short \
@@ -69,8 +69,8 @@
   ansible.builtin.shell: 
     cmd: | 
       DST_HOST=kubernetes.default.svc.cluster.local \
-      for dnspod in `oc get pods -n openshift-dns -o name --no-headers -l dns.operator.openshift.io/daemonset-dns=default` \
-        do for dnsip in `oc get pods -n openshift-dns -l dns.operator.openshift.io/daemonset-dns=default -o go-template='{{ range .items }} {{index .status.podIP }} {{end}}'` \
+      for dnspod in 'oc get pods -n openshift-dns -o name --no-headers -l dns.operator.openshift.io/daemonset-dns=default' \
+        do for dnsip in 'oc get pods -n openshift-dns -l dns.operator.openshift.io/daemonset-dns=default -o go-template='{{ range .items }} {{index .status.podIP }} {{end}}'' \
           do echo -ne "$dnspod\tquerying $DST_HOST to $dnsip ->\t" \
             oc exec -n openshift-dns $dnspod -- dig @$dnsip $DST_HOST -p 5353 +short 2>/dev/null \
         done \
@@ -82,8 +82,8 @@
   ansible.builtin.shell: 
     cmd: | 
       DST_HOST=redhat.com \
-      for dnspod in `oc get pods -n openshift-dns -o name --no-headers -l dns.operator.openshift.io/daemonset-dns=default` \
-        do for dnsip in `oc get pods -n openshift-dns -o go-template='{{ range .items }} {{index .status.podIP }} {{end}}' -l dns.operator.openshift.io/daemonset-dns=default` \
+      for dnspod in 'oc get pods -n openshift-dns -o name --no-headers -l dns.operator.openshift.io/daemonset-dns=default' \
+        do for dnsip in 'oc get pods -n openshift-dns -o go-template='{{ range .items }} {{index .status.podIP }} {{end}}' -l dns.operator.openshift.io/daemonset-dns=default' \
           do echo -ne "$dnspod\tquerying $DST_HOST to $dnsip ->\t" \
             oc exec -n openshift-dns $dnspod -- dig @$dnsip $DST_HOST -p 5353 +short 2>/dev/null \
         done \
