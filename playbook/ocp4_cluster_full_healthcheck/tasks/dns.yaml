@@ -35,35 +35,35 @@
 
 # Verify that both TCP and UDP requests from the coredns container to the upstream DNS server are possible. Both TCP and UDP connections to the upstream DNS server are required for CoreDNS to function correctly. Replace [upstream_dns_IP] and [upstream_dns_port] with the correct upstream IP and port
 
-- name: Test DNS resolution via TCP protocol
-  ansible.builtin.shell: 
-    cmd: | 
-      echo -e "\nTCP\n" \
-      for dnspod in `oc get pods -n openshift-dns -o name --no-headers -l dns.operator.openshift.io/daemonset-dns=default` \
-        do echo "Pod $dnspod" \ 
-        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} $(oc whoami --show-server) -p ${UPSTREAM_DNS_PORT} +tcp +short \
-        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} $(oc whoami --show-console) -p ${UPSTREAM_DNS_PORT} +tcp +short \
-        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} redhat.com -p ${UPSTREAM_DNS_PORT} +tcp +short \
-        echo \
-      done
-  when: UPSTREAM_DNS_IP is defined and UPSTREAM_DNS_PORT is defined
-  ignore_errors: true
-  register: dns_tcp_resolution
-
-- name: Test DNS resolution via UDP protocol
-  ansible.builtin.shell: 
-    cmd: | 
-      echo -e "\nUDP\n" \
-      for dnspod in `oc get pods -n openshift-dns -o name --no-headers -l dns.operator.openshift.io/daemonset-dns=default` \
-        do echo "Pod $dnspod" \
-        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} $(oc whoami --show-server) -p ${UPSTREAM_DNS_PORT} +notcp +short \
-        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} $(oc whoami --show-console) -p ${UPSTREAM_DNS_PORT} +notcp +short \
-        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} redhat.com -p ${UPSTREAM_DNS_PORT} +notcp +short \
-        echo \
-      done
-  when: UPSTREAM_DNS_IP is defined and UPSTREAM_DNS_PORT is defined
-  ignore_errors: true
-  register: dns_udp_resolution
+#- name: Test DNS resolution via TCP protocol
+#  ansible.builtin.shell: 
+#    cmd: | 
+#      echo -e "\nTCP\n" \
+#      for dnspod in `oc get pods -n openshift-dns -o name --no-headers -l dns.operator.openshift.io/daemonset-dns=default` \
+#        do echo "Pod $dnspod" \ 
+#        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} $(oc whoami --show-server) -p ${UPSTREAM_DNS_PORT} +tcp +short \
+#        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} $(oc whoami --show-console) -p ${UPSTREAM_DNS_PORT} +tcp +short \
+#        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} redhat.com -p ${UPSTREAM_DNS_PORT} +tcp +short \
+#        echo \
+#      done
+#  when: UPSTREAM_DNS_IP is defined and UPSTREAM_DNS_PORT is defined
+#  ignore_errors: true
+#  register: dns_tcp_resolution
+#
+#- name: Test DNS resolution via UDP protocol
+#  ansible.builtin.shell: 
+#    cmd: | 
+#      echo -e "\nUDP\n" \
+#      for dnspod in `oc get pods -n openshift-dns -o name --no-headers -l dns.operator.openshift.io/daemonset-dns=default` \
+#        do echo "Pod $dnspod" \
+#        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} $(oc whoami --show-server) -p ${UPSTREAM_DNS_PORT} +notcp +short \
+#        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} $(oc whoami --show-console) -p ${UPSTREAM_DNS_PORT} +notcp +short \
+#        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} redhat.com -p ${UPSTREAM_DNS_PORT} +notcp +short \
+#        echo \
+#      done
+#  when: UPSTREAM_DNS_IP is defined and UPSTREAM_DNS_PORT is defined
+#  ignore_errors: true
+#  register: dns_udp_resolution
 
 - name: Test resolving internal queries like `kubernetes.default.svc.cluster.local`
   ansible.builtin.shell: 
@@ -155,7 +155,7 @@
 - set_fact:
     DNS_OPERATOR_ALL: "{{ dns-operator_all.stdout | default('NO DATA', true) }}"
     DNS_OPERATOR_ENDPOINTS: "{{ dns-operator_endpoints.stdout | default('NO DATA', true) }}"
-    DNS-OPERATOR_LOGS: "{{ dns-operator_logs.stdout | default('NO DATA', true) }}"
+    DNS_OPERATOR_LOGS: "{{ dns-operator_logs.stdout | default('NO DATA', true) }}"
     OPENSHIFT-DNS_ALL: "{{ openshift-dns_all.stdout | default('NO DATA', true) }}"
     DNS_RESOLVER_IP: "{{ dns_resolver_ip.stdout | default('NO DATA', true) }}"
     COREDNS_CONTAINER_LOGS: "{{ coredns_container_logs.stdout | default('NO DATA', true) }}"
