@@ -17,13 +17,13 @@
 ### Logs of dns-operator pod
 
 ```
-{{DNS-OPERATOR_LOGS.stdout_lines|join('\n')}}
+{{DNS_OPERATOR_LOGS.stdout_lines|join('\n')}}
 ```
 
 #### DNS components are running in the openshift-dns project
 
 ```
-{{OPENSHIFT-DNS_ALL.stdout_lines|join('\n')}}
+{{OPENSHIFT_DNS_ALL.stdout_lines|join('\n')}}
 ```
 
 #### Configuration of '/etc/resolv.conf' file

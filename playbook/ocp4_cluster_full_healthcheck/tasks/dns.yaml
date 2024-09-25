@@ -156,7 +156,7 @@
     DNS_OPERATOR_ALL: "{{ dns_operator_all.stdout | default('NO DATA', true) }}"
     DNS_OPERATOR_ENDPOINTS: "{{ dns_operator_endpoints.stdout | default('NO DATA', true) }}"
     DNS_OPERATOR_LOGS: "{{ dns_operator_logs.stdout | default('NO DATA', true) }}"
-    OPENSHIFT-DNS_ALL: "{{ openshift_dns_all.stdout | default('NO DATA', true) }}"
+    OPENSHIFT_DNS_ALL: "{{ openshift_dns_all.stdout | default('NO DATA', true) }}"
     DNS_RESOLVER_IP: "{{ dns_resolver_ip.stdout | default('NO DATA', true) }}"
     COREDNS_CONTAINER_LOGS: "{{ coredns_container_logs.stdout | default('NO DATA', true) }}"
     DNS_TCP_RESOLUTION: "{{ dns_tcp_resolution.stdout | default('NO DATA', true) }}"
