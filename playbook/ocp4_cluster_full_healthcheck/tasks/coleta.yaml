@@ -5,22 +5,22 @@
      state: directory
      mode: '0755'
     
- - name: OC Version
+ - name: oc version
    ansible.builtin.shell: oc version
    ignore_errors: true
    register: client_version
 
- - name: Openshift ID
+ - name: OpenShift ID
    ansible.builtin.shell: oc get clusterversion -o jsonpath='{.items[].spec.clusterID}'
    ignore_errors: true
    register: id
 
- - name: Openshift Version
+ - name: OpenShift Version
    ansible.builtin.shell: oc get clusterversion/version -o jsonpath='{.status.desired.version}'
    ignore_errors: true
    register: version
 
- - name: Openshift Update Available
+ - name: OpenShift Update Available
    ansible.builtin.shell: oc get clusterversion/version -o jsonpath='{.status.availableUpdates[0].version}'
    ignore_errors: true
    register: update
@@ -40,7 +40,7 @@
    ignore_errors: true
    register: update_path
 
- - name: Openshift Channel
+ - name: OpenShift Channel
    ansible.builtin.shell: oc get clusterversion/version -o jsonpath='{.spec.channel}'
    ignore_errors: true
    register: channel
