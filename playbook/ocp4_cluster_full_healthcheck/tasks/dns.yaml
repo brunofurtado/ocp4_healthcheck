@@ -115,7 +115,7 @@
 - name: Isolate potentially SDN connections issues towards the coredns pods
   ansible.builtin.shell: 
     cmd: | 
-      for pod in $(oc -n openshift-dns get pod -l dns.operator.openshift.io/daemonset-dns -o jsonpath='{range .items[*]}{.status.podIP}{"\n"}{end}'); do oc exec -n openshift-dns-operator $(oc get pods -n openshift-dns-operator -o name --no-headers -l name=dns-operator) -c dns-operator -- nslookup -port=5353 www.redhat.com $pod; done
+      for pod in $(oc -n openshift-dns get pod -l dns.operator.openshift.io/daemonset-dns -o jsonpath='{range .items[*]}{.status.podIP}{"\n"}{end}'); do oc exec -n openshift-dns-operator $(oc get pods -n openshift-dns-operator -o name --no-headers -l name=dns-operator) -c dns-operator -- nslookup -port=5353 redhat.com $pod; done
   ignore_errors: true
   register: nslookup
 
