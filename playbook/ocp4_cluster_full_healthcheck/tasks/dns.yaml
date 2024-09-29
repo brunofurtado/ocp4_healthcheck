@@ -1,0 +1,141 @@
+---
+# Troubleshooting Red Hat OpenShift Container Platform 4: DNS
+# Ref. https://access.redhat.com/solutions/3804501
+#
+
+- name: Check to see if there are pods and services created under `openshift-dns-operator`
+  ansible.builtin.shell: oc -n openshift-dns-operator get all -o wide
+  ignore_errors: true
+  register: dns_operator_all
+
+- name: Endpoints, check to see if there are pods associated to services under `openshift-dns-operator`
+  ansible.builtin.shell: oc -n openshift-dns-operator get ep
+  ignore_errors: true
+  register: dns_operator_endpoints
+
+- name: Check the logs of dns-operator pod
+  ansible.builtin.shell: 
+    cmd: |
+      oc logs pod/`oc get pods -o=jsonpath="{.items[0].metadata.name}" -n openshift-dns-operator` -n openshift-dns-operator 2>/dev/null || oc logs pod/`oc get pods -o=jsonpath="{.items[0].metadata.name}" -n openshift-dns-operator` -c dns-operator -n openshift-dns-operator
+  ignore_errors: true
+  register: dns_operator_logs
+
+- name: Check dns components are running in the openshift-dns project
+  ansible.builtin.shell: oc -n openshift-dns get all
+  ignore_errors: true
+  register: openshift_dns_all
+
+- name: Check the pod resolver is pointing to DNS Service IP
+  ansible.builtin.shell: export PODS=`oc get pods -o=jsonpath="{.items[*].metadata.name}" -n openshift-apiserver`; for pod in $PODS; do oc exec $pod -c openshift-apiserver -n openshift-apiserver -- cat /etc/resolv.conf ; done;
+  ignore_errors: true
+  register: dns_resolver_ip
+
+- name: Check the coredns container logs
+  ansible.builtin.shell: export PODS=`oc get pods -o=jsonpath="{.items[*].metadata.name}" -n openshift-dns -l dns.operator.openshift.io/daemonset-dns=default`; for pod in $PODS; do oc logs $pod -c dns -n openshift-dns|sed "s/^/$pod\t/"; echo; done
+  ignore_errors: true
+  register: coredns_container_logs
+
+# Verify that both TCP and UDP requests from the coredns container to the upstream DNS server are possible. Both TCP and UDP connections to the upstream DNS server are required for CoreDNS to function correctly. Replace [upstream_dns_IP] and [upstream_dns_port] with the correct upstream IP and port
+
+#- name: Test DNS resolution via TCP protocol
+#  ansible.builtin.shell: 
+#    cmd: | 
+#      echo -e "\nTCP\n" \
+#      for dnspod in `oc get pods -n openshift-dns -o name --no-headers -l dns.operator.openshift.io/daemonset-dns=default` \
+#        do echo "Pod $dnspod" \ 
+#        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} $(oc whoami --show-server) -p ${UPSTREAM_DNS_PORT} +tcp +short \
+#        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} $(oc whoami --show-console) -p ${UPSTREAM_DNS_PORT} +tcp +short \
+#        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} redhat.com -p ${UPSTREAM_DNS_PORT} +tcp +short \
+#        echo \
+#      done
+#  when: UPSTREAM_DNS_IP is defined and UPSTREAM_DNS_PORT is defined
+#  ignore_errors: true
+#  register: dns_tcp_resolution
+#
+#- name: Test DNS resolution via UDP protocol
+#  ansible.builtin.shell: 
+#    cmd: | 
+#      echo -e "\nUDP\n" \
+#      for dnspod in `oc get pods -n openshift-dns -o name --no-headers -l dns.operator.openshift.io/daemonset-dns=default` \
+#        do echo "Pod $dnspod" \
+#        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} $(oc whoami --show-server) -p ${UPSTREAM_DNS_PORT} +notcp +short \
+#        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} $(oc whoami --show-console) -p ${UPSTREAM_DNS_PORT} +notcp +short \
+#        oc exec -n openshift-dns -c dns $dnspod -- dig @${UPSTREAM_DNS_IP} redhat.com -p ${UPSTREAM_DNS_PORT} +notcp +short \
+#        echo \
+#      done
+#  when: UPSTREAM_DNS_IP is defined and UPSTREAM_DNS_PORT is defined
+#  ignore_errors: true
+#  register: dns_udp_resolution
+
+- name: Test resolving internal queries like kubernetes.default.svc.cluster.local
+  ansible.builtin.shell: 
+    cmd: | 
+      DST_HOST="kubernetes.default.svc.cluster.local"; for dnspod in $(oc get pods -n openshift-dns -o name --no-headers -l dns.operator.openshift.io/daemonset-dns=default); do for dnsip in $(oc get pods -n openshift-dns -l dns.operator.openshift.io/daemonset-dns=default --no-headers -o wide | awk '{print $6}'); do echo -ne "$dnspod querying $DST_HOST to $dnsip -> "; oc exec -n openshift-dns $dnspod -- dig @$dnsip $DST_HOST -p 5353 +short 2>/dev/null; done; done
+  ignore_errors: true
+  register: resolve_internal_svc
+
+- name: Test resolving external queries like "redhat.com"
+  ansible.builtin.shell: 
+    cmd: | 
+      DST_HOST="redhat.com"; for dnspod in `oc get pods -n openshift-dns -o name --no-headers -l dns.operator.openshift.io/daemonset-dns=default`; do for dnsip in `oc get pods -n openshift-dns -l dns.operator.openshift.io/daemonset-dns=default --no-headers -o wide | awk '{print $6}'`; do echo -ne "$dnspod querying $DST_HOST to $dnsip -> "; oc exec -n openshift-dns $dnspod -- dig @$dnsip $DST_HOST -p 5353 +short 2>/dev/null ; done; done
+  ignore_errors: true
+  register: resolve_external_host
+
+# Important: If there are DNS forwarding entries in the dns operator, pay special attention to run these commands for addresses that will only resolve with that forwarding.
+# Also please note that image lookups will not use the DNS operator.
+#
+# Check within a pod to gather the DNS lookup time versus total request time (change the [namespace_name] and [pod_name] with the name of a namespace and a pod)
+#
+#IPv4 and IPv6
+#
+
+- name: Check within a pod to gather the DNS lookup time versus total request time (IPv4 and IPv6)
+  ansible.builtin.shell: 
+    cmd: | 
+      oc exec -n openshift-dns-operator $(oc get pods -n openshift-dns-operator -o name --no-headers -l name=dns-operator) -c dns-operator -- bash -c 'for i in $(seq 1 3); do echo -n $i - "$(date "+%b %d, %Y - %H:%M:%S:%N (%Z)")  "; curl -s -o /dev/null -w "%{time_namelookup} %{time_total} %{http_code}\n" https://www.redhat.com -k; done'
+  ignore_errors: true
+  register: dns_resolution_time
+
+- name: Check within a pod to gather the DNS lookup time versus total request time (IPv4 only)
+  ansible.builtin.shell: 
+    cmd: |
+      oc exec -n openshift-dns-operator $(oc get pods -n openshift-dns-operator -o name --no-headers -l name=dns-operator) -c dns-operator -- bash -c 'for i in $(seq 1 3); do echo -n $i - "$(date "+%b %d, %Y - %H:%M:%S:%N (%Z)")  "; curl -s -o /dev/null -w "%{time_namelookup} %{time_total} %{http_code}\n" --ipv4 https://www.redhat.com -k; done'
+  ignore_errors: true
+  register: ipv4_dns_resolution_time
+
+#- name: Check within a pod to gather the DNS lookup time versus total request time (IPv6 only)
+#  ansible.builtin.shell: 
+#    cmd: | 
+#    oc exec -n openshift-dns-operator $(oc get pods -n openshift-dns-operator -o name --no-headers -l name=dns-operator) -c dns-operator -- bash -c 'for i in $(seq 1 3); do echo -n $i - "$(date "+%b %d, %Y - %H:%M:%S:%N (%Z)")  "; curl -s -o /dev/null -w "%{time_namelookup} %{time_total} %{http_code}\n" --ipv6 https://www.redhat.com -k; done'
+#  ignore_errors: true
+#  register: ipv6_dns_resolution_time
+
+# From inside a pod, run the following commands to potentially isolate SDN connections issues towards the coredns pods (change the [namespace_name] and [pod_name] with the name of a namespace and a pod)
+
+- name: Isolate potentially SDN connections issues towards the coredns pods
+  ansible.builtin.shell: 
+    cmd: | 
+      for pod in $(oc -n openshift-dns get pod -l dns.operator.openshift.io/daemonset-dns -o jsonpath='{range .items[*]}{.status.podIP}{"\n"}{end}'); do oc exec -n openshift-dns-operator $(oc get pods -n openshift-dns-operator -o name --no-headers -l name=dns-operator) -c dns-operator -- nslookup -port=5353 www.redhat.com $pod; done
+  ignore_errors: true
+  register: nslookup
+
+- set_fact:
+    DNS_OPERATOR_ALL: "{{ dns_operator_all.stdout | default('NO DATA', true) }}"
+    DNS_OPERATOR_ENDPOINTS: "{{ dns_operator_endpoints.stdout | default('NO DATA', true) }}"
+    DNS_OPERATOR_LOGS: "{{ dns_operator_logs.stdout | default('NO DATA', true) }}"
+    OPENSHIFT_DNS_ALL: "{{ openshift_dns_all.stdout | default('NO DATA', true) }}"
+    DNS_RESOLVER_IP: "{{ dns_resolver_ip.stdout | default('NO DATA', true) }}"
+    COREDNS_CONTAINER_LOGS: "{{ coredns_container_logs.stdout | default('NO DATA', true) }}"
+#    DNS_TCP_RESOLUTION: "{{ dns_tcp_resolution.stdout | default('NO DATA', true) }}"
+#    DNS_UDP_RESOLUTION: "{{ dns_udp_resolution.stdout | default('NO DATA', true) }}"
+    RESOLVE_INTERNAL_SVC: "{{ resolve_internal_svc.stdout | default('NO DATA', true) }}"
+    RESOLVE_EXTERNAL_HOST: "{{ resolve_external_host.stdout | default('NO DATA', true) }}"
+    DNS_RESOLUTION_TIME: "{{ dns_resolution_time.stdout | default('NO DATA', true) }}"
+    IPV4_DNS_RESOLUTION_TIME: "{{ ipv4_dns_resolution_time.stdout | default('NO DATA', true) }}"
+#    IPV6_DNS_RESOLUTION_TIME: "{{ ipv6_dns_resolution_time.stdout | default('NO DATA', true) }}"
+    NSLOOKUP: "{{ nslookup.stdout | default('NO DATA', true) }}"
+
+- name: Create Report
+  template:
+    src: dns-info.md.j2
+    dest: /tmp/report/dns.md

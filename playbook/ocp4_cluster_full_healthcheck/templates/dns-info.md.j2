@@ -1,0 +1,79 @@
+# DNS Informations
+
+## DNS Health check
+
+### Pods and services created under `openshift-dns-operator`
+ 
+```python
+{{DNS_OPERATOR_ALL}}
+```
+
+### Endpoints associated to services under `openshift-dns-operator`
+```python
+{{DNS_OPERATOR_ENDPOINTS}}
+```
+
+### Logs of dns-operator pod
+
+```python
+{{DNS_OPERATOR_LOGS}}
+```
+
+#### DNS components are running in the openshift-dns project
+
+```python
+{{OPENSHIFT_DNS_ALL}}
+```
+
+#### Configuration of '/etc/resolv.conf' file
+
+```python
+{{DNS_RESOLVER_IP}}
+```
+
+#### Coredns container logs
+
+```python
+{{COREDNS_CONTAINER_LOGS}}
+```
+
+### DNS resolution via TCP protocol
+
+# ```
+# DNS_TCP_RESOLUTION
+# ```
+
+### DNS resolution via UDP protocol
+
+# ```
+# DNS_UDP_RESOLUTION
+# ```
+
+### Resolving internal queries like `kubernetes.default.svc.cluster.local`
+
+```python
+{{RESOLVE_INTERNAL_SVC}}
+```
+
+### Resolving external queries like `redhat.com`
+
+```python
+{{RESOLVE_EXTERNAL_HOST}}
+```
+### DNS lookup time versus total request time (IPv4 and IPv6)
+```python
+{{DNS_RESOLUTION_TIME}}
+```
+### DNS lookup time versus total request time (IPv4 only)
+```python
+{{IPV4_DNS_RESOLUTION_TIME}}
+```
+### DNS lookup time versus total request time (IPv6 only)
+# ```
+# IPV6_DNS_RESOLUTION_TIME
+# ```
+#
+### nslookup www.redhat.com
+```python
+{{NSLOOKUP}}
+```
