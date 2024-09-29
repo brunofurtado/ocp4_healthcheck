@@ -1,79 +1,79 @@
 # DNS Informations
 
-## DNS Status and Health
-
+## DNS Health check
 
 ### Pods and services created under `openshift-dns-operator`
  
 ```python
-{{DNS_OPERATOR_ALL.stdout_lines|join('\n')}}
+{{DNS_OPERATOR_ALL}}
 ```
 
 ### Endpoints associated to services under `openshift-dns-operator`
 ```python
-{{DNS_OPERATOR_ENDPOINTS.stdout_lines|join('\n')}}
+{{DNS_OPERATOR_ENDPOINTS}}
 ```
 
 ### Logs of dns-operator pod
 
-```
-{{DNS_OPERATOR_LOGS.stdout_lines|join('\n')}}
+```python
+{{DNS_OPERATOR_LOGS}}
 ```
 
 #### DNS components are running in the openshift-dns project
 
-```
-{{OPENSHIFT_DNS_ALL.stdout_lines|join('\n')}}
+```python
+{{OPENSHIFT_DNS_ALL}}
 ```
 
 #### Configuration of '/etc/resolv.conf' file
 
-```
-{{DNS_RESOLVER_IP.stdout_lines|join('\n')}}
+```python
+{{DNS_RESOLVER_IP}}
 ```
 
 #### Coredns container logs
 
-```
-{{COREDNS_CONTAINER_LOGS.stdout_lines|join('\n')}}
+```python
+{{COREDNS_CONTAINER_LOGS}}
 ```
 
 ### DNS resolution via TCP protocol
 
-```
-{{DNS_TCP_RESOLUTION.stdout_lines|join('\n')}}
-```
+# ```
+# DNS_TCP_RESOLUTION
+# ```
 
 ### DNS resolution via UDP protocol
 
-```
-{{DNS_UDP_RESOLUTION.stdout_lines|join('\n')}}
-```
+# ```
+# DNS_UDP_RESOLUTION
+# ```
 
 ### Resolving internal queries like `kubernetes.default.svc.cluster.local`
 
-```
-{{RESOLVE_INTERNAL_SVC.stdout_lines|join('\n')}}
+```python
+{{RESOLVE_INTERNAL_SVC}}
 ```
 
 ### Resolving external queries like `redhat.com`
 
-```
-{{RESOLVE_EXTERNAL_HOST.stdout_lines|join('\n')}}
+```python
+{{RESOLVE_EXTERNAL_HOST}}
 ```
 ### DNS lookup time versus total request time (IPv4 and IPv6)
-``` 
-{{DNS_RESOLUTION_TIME.stdout_lines|join('\n')}}
+```python
+{{DNS_RESOLUTION_TIME}}
 ```
 ### DNS lookup time versus total request time (IPv4 only)
-```
-{{IPV4_DNS_RESOLUTION_TIME.stdout_lines|join('\n')}}
+```python
+{{IPV4_DNS_RESOLUTION_TIME}}
 ```
 ### DNS lookup time versus total request time (IPv6 only)
-```
-{{IPV6_DNS_RESOLUTION_TIME.stdout_lines|join('\n')}}
-```
+# ```
+# IPV6_DNS_RESOLUTION_TIME
+# ```
+#
 ### nslookup www.redhat.com
-```
-{{NSLOOKUP.stdout_lines|join('\n')}}
+```python
+{{NSLOOKUP}}
 ```
