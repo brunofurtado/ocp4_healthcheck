@@ -46,9 +46,15 @@
     infra_total_memory: "{{ infra_nodes['items'] | map(attribute='status.capacity.memory') | map('regex_replace', '[^0-9]', '') | map('int') | sum }}"
 
 - set_fact:
-MASTER_TOTAL_CPU="{{ master_total_cpu | default('NO DATA', true) }}"
-MASTER_TOTAL_MEMORY="{{ ((master_total_memory|int) / 1024 / 1024 | round(2) ) | default('NO DATA', true) }}"
-WORKER_TOTAL_CPU="{{ worker_total_cpu | default('NO DATA', true) }}"
-WORKER_TOTAL_MEMORY="{{ ((worker_total_memory|int) / 1024 / 1024 | round(2) ) | default('NO DATA', true) }}"
-INFRA_TOTAL_CPU="{{ infra_total_cpu | default('NO DATA', true) }}"
-INFRA_TOTAL_MEMORY="{{ ((infra_total_memory|int) / 1024 / 1024 | round(2) ) | default('NO DATA', true) }}"
+    MASTER_TOTAL_CPU="{{ master_total_cpu | default('NO DATA', true) }}"
+    MASTER_TOTAL_MEMORY="{{ (((master_total_memory|int) / 1024 / 1024) | round(2) ) | default('NO DATA', true) }}"
+    WORKER_TOTAL_CPU="{{ worker_total_cpu | default('NO DATA', true) }}"
+    WORKER_TOTAL_MEMORY="{{ (((worker_total_memory|int) / 1024 / 1024) | round(2) ) | default('NO DATA', true) }}"
+    INFRA_TOTAL_CPU="{{ infra_total_cpu | default('NO DATA', true) }}"
+    INFRA_TOTAL_MEMORY="{{ (((infra_total_memory|int) / 1024 / 1024) | round(2) ) | default('NO DATA', true) }}"
+
+
+- name: Create Report
+  template:
+    src: capacity.md.j2
+    dest: /tmp/report/capacity.md
