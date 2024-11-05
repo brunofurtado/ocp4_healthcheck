@@ -6,3 +6,4 @@
 - include_tasks: odf.yaml
 - include_tasks: operators.yaml
 - include_tasks: dns.yaml
+- include_tasks: capacity.yaml
