@@ -1,0 +1,54 @@
+---
+- name: Obter lista de nós master
+  command: "oc get nodes -l node-role.kubernetes.io/master -o json"
+  register: master_nodes_output
+  changed_when: false
+
+- name: Extrair capacidade de CPU e memória de cada nó master
+  set_fact:
+    master_nodes: "{{ master_nodes_output.stdout | from_json }}"
+
+- name: Somar capacidade de CPU e memória
+  set_fact:
+    master_total_cpu: "{{ master_nodes['items'] | map(attribute='status.capacity.cpu') | map('regex_replace', '[^0-9]', '') | map('int') | sum }}"
+    master_total_memory: "{{ master_nodes['items'] | map(attribute='status.capacity.memory') | map('regex_replace', '[^0-9]', '') | map('int') | sum }}"
+
+
+
+- name: Obter lista de nós worker
+  command: "oc get nodes -l node-role.kubernetes.io/worker -o json"
+  register: worker_nodes_output
+  changed_when: false
+
+- name: Extrair capacidade de CPU e memória de cada nó worker
+  set_fact:
+    worker_nodes: "{{ worker_nodes_output.stdout | from_json }}"
+
+- name: Somar capacidade de CPU e memória
+  set_fact:
+    worker_total_cpu: "{{ worker_nodes['items'] | map(attribute='status.capacity.cpu') | map('regex_replace', '[^0-9]', '') | map('int') | sum }}"
+    worker_total_memory: "{{ worker_nodes['items'] | map(attribute='status.capacity.memory') | map('regex_replace', '[^0-9]', '') | map('int') | sum }}"
+
+
+
+- name: Obter lista de nós infra
+  command: "oc get nodes -l node-role.kubernetes.io/infra -o json"
+  register: infra_nodes_output
+  changed_when: false
+
+- name: Extrair capacidade de CPU e memória de cada nó infra
+  set_fact:
+    infra_nodes: "{{ infra_nodes_output.stdout | from_json }}"
+
+- name: Somar capacidade de CPU e memória
+  set_fact:
+    infra_total_cpu: "{{ infra_nodes['items'] | map(attribute='status.capacity.cpu') | map('regex_replace', '[^0-9]', '') | map('int') | sum }}"
+    infra_total_memory: "{{ infra_nodes['items'] | map(attribute='status.capacity.memory') | map('regex_replace', '[^0-9]', '') | map('int') | sum }}"
+
+- set_fact:
+MASTER_TOTAL_CPU="{{ master_total_cpu | default('NO DATA', true) }}"
+MASTER_TOTAL_MEMORY="{{ ((master_total_memory|int) / 1024 / 1024 | round(2) ) | default('NO DATA', true) }}"
+WORKER_TOTAL_CPU="{{ worker_total_cpu | default('NO DATA', true) }}"
+WORKER_TOTAL_MEMORY="{{ ((worker_total_memory|int) / 1024 / 1024 | round(2) ) | default('NO DATA', true) }}"
+INFRA_TOTAL_CPU="{{ infra_total_cpu | default('NO DATA', true) }}"
+INFRA_TOTAL_MEMORY="{{ ((infra_total_memory|int) / 1024 / 1024 | round(2) ) | default('NO DATA', true) }}"
